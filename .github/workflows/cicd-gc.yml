@@ -5,6 +5,18 @@ on:
     branches:
       - main
 
+  workflow_dispatch:
+    branches:
+      - main
+    inputs:
+    logLevel:
+      description: 'Log level'
+      required: true
+      default: 'warning'
+    tags:
+      description: 'Test scenario tags'
+
+
 env:
   IMAGE_NAME: ${{ secrets.GCP_ARTIFACT_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/go-web-service/go-web-service:latest
 
