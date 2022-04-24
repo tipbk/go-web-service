@@ -6,15 +6,20 @@ on:
       - main
 
 env:
-  IMAGE_NAME: ${{ secrets.GCP_ARTIFACT_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/go-web-service/go-web-service
+  IMAGE_NAME: ${{ secrets.GCP_ARTIFACT_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/go-web-service/go-web-service:latest
 
 jobs:
   cicd:
     name: Setup Gcloud Account
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
     steps:
 
-    - name: Login
+    - id: 'auth'
       uses: 'google-github-actions/auth@v0'
       with:
         credentials_json: '${{ secrets.GCLOUD_SERVICE_KEY }}'
@@ -32,7 +37,7 @@ jobs:
       run: docker build . -t ${{ env.IMAGE_NAME }}
 
     - name: Push Docker image
-      run: docker push ${{ env.IMAGE_NAME }}:latest
+      run: docker push ${{ env.IMAGE_NAME }}
 
     - name: Deploy Docker image
       run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image ${{ env.IMAGE_NAME }} --region us-central1 --platform managed
