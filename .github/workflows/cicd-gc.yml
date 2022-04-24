@@ -15,11 +15,12 @@ jobs:
     steps:
 
     - name: Login
-      uses: google-github-actions/setup-gcloud@v0
+      uses: 'google-github-actions/auth@v0'
       with:
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
-        service_account_email: ${{ secrets.GCP_EMAIL }}
-        service_account_key: ${{ secrets.GCLOUD_SERVICE_KEY }}
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v0'
 
     - name: Configure Docker
       run: gcloud auth configure-docker ${{ secrets.GCP_ARTIFACT_REGISTRY }}
@@ -31,7 +32,7 @@ jobs:
       run: docker build . -t ${{ env.IMAGE_NAME }}
 
     - name: Push Docker image
-      run: docker push ${{ env.IMAGE_NAME }}
+      run: docker push ${{ env.IMAGE_NAME }}:latest
 
     - name: Deploy Docker image
       run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image ${{ env.IMAGE_NAME }} --region us-central1 --platform managed
