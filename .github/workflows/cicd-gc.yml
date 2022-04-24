@@ -7,7 +7,7 @@ on:
 
 env:
   APP_NAME: go-web-service
-  IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ env.APP_NAME }}
+  IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/$APP_NAME
 
 jobs:
   cicd:
