@@ -13,7 +13,7 @@ RUN go build -o ./app
 
 #-------
 
-FROM alpine:latest
+FROM alpine:3.14
 
 COPY --from=buildgo ./src/app .
 
