@@ -19,11 +19,11 @@ jobs:
       with:
         credentials_json: '${{ secrets.GCLOUD_SERVICE_KEY }}'
 
-    - name: 'Set up Cloud SDK'
-      uses: 'google-github-actions/setup-gcloud@v0'
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0
 
-    - name: Configure Docker
-      run: gcloud auth configure-docker ${{ secrets.GCP_ARTIFACT_REGISTRY }}
+    - name: Authorize Docker push
+      run: gcloud auth configure-docker
 
     - name: Checkout repository
       uses: actions/checkout@v2
